@@ -1,17 +1,5 @@
 # Customer360 — Customer Behavior Analytics
 
-\<p align="center">
-&#x20; \<strong>Turning Retail Transaction Data into Customer Insights\</strong>
-\</p>
-
-\<p align="center">
-&#x20; \<img src="[https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white](https://img.shields.io/badge/Python-3776AB?style=for-the-badge\&logo=python\&logoColor=white)" alt="Python" />
-&#x20; \<img src="[https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white](https://img.shields.io/badge/Pandas-150458?style=for-the-badge\&logo=pandas\&logoColor=white)" alt="Pandas" />
-&#x20; \<img src="[https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge\&logo=mysql\&logoColor=white)" alt="MySQL" />
-&#x20; \<img src="[https://img.shields.io/badge/Jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white](https://img.shields.io/badge/Jupyter-F37626?style=for-the-badge\&logo=jupyter\&logoColor=white)" alt="Jupyter" />
-&#x20; \<img src="[https://img.shields.io/badge/Power_BI-Planned-F2C811?style=for-the-badge&logo=powerbi&logoColor=black](https://img.shields.io/badge/Power_BI-Planned-F2C811?style=for-the-badge\&logo=powerbi\&logoColor=black)" alt="Power BI planned" />
-\</p>
-
 ## Overview
 
 **Customer360** is a customer behavior analytics project that transforms retail transaction data into actionable business insights. It combines Python-based data cleaning, exploratory data analysis (EDA), customer segmentation, and SQL analytics to understand purchasing patterns and customer value.
