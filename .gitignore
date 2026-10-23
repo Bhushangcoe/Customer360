@@ -12,6 +12,7 @@ venv/
 # Raw and processed datasets
 data/raw/*
 !data/raw/.gitkeep
+!data/raw/Online Retail.xlsx
 
 data/processed/*
 !data/processed/.gitkeep
