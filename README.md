@@ -13,7 +13,7 @@ The project uses the **Online Retail dataset** to explore sales performance, ide
 - Segment customers using RFM analysis.
 - Identify loyal, promising, and at-risk customer groups.
 - Analyze product performance and customer purchasing frequency.
-- Prepare structured datasets for SQL analysis and future business intelligence dashboards.
+- Prepare structured datasets for SQL analysis and business reporting.
 
 ## Dataset
 
@@ -42,7 +42,7 @@ The dataset contains transactions from a UK-based online retail business.
 
 Dataset source: [UCI Online Retail Dataset](https://archive.ics.uci.edu/dataset/352/online+retail)
 
-The raw dataset is excluded from this repository to keep the project lightweight. Download it from the official source before running the notebook.
+The source workbook and processed CSVs are included in this repository. The source data is available from the [official UCI dataset page](https://archive.ics.uci.edu/dataset/352/online+retail).
 
 ## Tech Stack
 
@@ -55,7 +55,6 @@ The raw dataset is excluded from this repository to keep the project lightweight
 | MySQL                | Relational storage and SQL analytics       |
 | SQLAlchemy & PyMySQL | Python-to-MySQL integration                |
 | Scikit-learn         | Available for future analytical extensions |
-| Power BI             | Planned interactive dashboard              |
 
 ## Project Workflow
 
@@ -66,7 +65,7 @@ The raw dataset is excluded from this repository to keep the project lightweight
 5. **RFM segmentation** — calculate customer recency, frequency, and monetary value and assign customer segments.
 6. **Database integration** — load processed transaction and customer datasets into MySQL.
 7. **SQL analytics** — query revenue trends, customer value, product performance, and repeat purchases.
-8. **Visualization** — develop a Power BI dashboard as a planned project enhancement.
+8. **Business findings** — review the data-backed results and caveats in `reports/business_insights.md`.
 
 ## Customer Segmentation: RFM Analysis
 
@@ -107,17 +106,31 @@ The SQL analysis covers:
 
 SQL scripts are maintained in the `sql/` directory.
 
+The SQL analysis is covered by local regression tests that execute all five query bodies against the processed CSVs using SQLite. The test translates MySQL's `DATE_FORMAT` expression to SQLite's `strftime`; run the queries in MySQL Workbench as described below for a final check against your MySQL server.
+
+## Verified Results
+
+The processed data contains 524,878 transaction rows from 1 December 2010 through 9 December 2011, with £10,642,110.80 in revenue across 19,960 invoices. The customer RFM table contains 4,338 identified customers. Read [reports/business_insights.md](reports/business_insights.md) for segment, retention, country, and data-quality findings and their interpretation.
+
+Run the local SQL regression checks from the repository root:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
 ## Repository Structure
 
 ```text
 Customer360/
 │
 ├── data/
-│   ├── raw/                  # Downloaded source data (not tracked)
-│   └── processed/            # Generated CSV files (not tracked)
+│   ├── raw/                  # Source workbook
+│   └── processed/            # Analysis-ready CSV files
 │
 ├── notebooks/
 │   └── 01_exploratory_analysis.ipynb
+├── reports/
+│   └── business_insights.md
 │
 ├── sql/
 │   └── customer_analysis.sql
@@ -126,8 +139,8 @@ Customer360/
 │   ├── data_cleaning.py
 │   └── load_to_mysql.py
 │
-├── reports/                  # Future analysis outputs
-├── dashboard/                # Planned Power BI dashboard
+├── tests/
+│   └── test_sql_analysis.py
 ├── .gitignore
 ├── requirements.txt
 └── README.md
@@ -158,25 +171,45 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### 4. Download the dataset
+### 4. Check the dataset
 
-Download the Online Retail Excel file from the [official UCI dataset page](https://archive.ics.uci.edu/dataset/352/online+retail).
+The source workbook and processed CSV files are included under `data/`. To reproduce the analysis from a fresh copy, download the Online Retail Excel file from the [official UCI dataset page](https://archive.ics.uci.edu/dataset/352/online+retail) and place it at:
 
-Place the downloaded file at:
+`data/raw/Online Retail.xlsx`
 
-```text
-data/raw/Online Retail.xlsx
+### 5. Clean the data and run the notebook
+
+From the repository root, run the standalone cleaning script to reproduce the processed data:
+
+```bash
+python src/data_cleaning.py
 ```
 
-### 5. Run the notebook
+By default, the script reads `data/raw/Online Retail.xlsx`, removes duplicate and incomplete records, flags cancelled invoices, filters to completed sales with positive quantity and price, calculates revenue, and builds customer RFM scores and segments.
+
+It creates or replaces these files in `data/processed/`:
+
+- `sales_transactions.csv` — valid transaction-level sales with revenue and cancellation fields.
+- `customer_rfm.csv` — recency, frequency, monetary value, scores, and customer segment.
+- `segment_summary.csv` — customer counts and average and total metrics by segment.
+
+To use a different input workbook or output directory, pass `--input` and `--output-dir`:
+
+```bash
+python src/data_cleaning.py --input "data/raw/Online Retail.xlsx" --output-dir "data/processed"
+```
+
+Running the script again replaces the three CSV files in the selected output directory. Ensure you have a backup if you need to preserve existing outputs.
+
+To explore the analysis and visualizations, start Jupyter:
 
 ```bash
 jupyter notebook
 ```
 
-Open `notebooks/01_exploratory_analysis.ipynb` and run the cells in order.
+Open `notebooks/01_exploratory_analysis.ipynb` to explore and visualize the data.
 
-The notebook generates processed transaction and customer RFM datasets in `data/processed/`.
+The notebook contains the project analysis; the script provides a repeatable command-line path for generating its processed datasets.
 
 ### 6. Configure MySQL
 
@@ -194,7 +227,7 @@ Run the data-loading script:
 python src/load_to_mysql.py
 ```
 
-Execute the queries in `sql/customer_analysis.sql` using MySQL Workbench or another MySQL client after the tables have been created.
+Execute the queries in `sql/customer_analysis.sql` using MySQL Workbench or another MySQL client after the tables have been created. To run the local regression checks without a MySQL server, use `python -m unittest discover -s tests -v`.
 
 ## Current Project Status
 
@@ -203,17 +236,14 @@ Execute the queries in `sql/customer_analysis.sql` using MySQL Workbench or anot
 - [x] Customer RFM calculation and segmentation
 - [x] Export processed datasets
 - [x] Load processed data into MySQL
-- [ ] Complete and validate the SQL analysis script
-- [ ] Build an interactive Power BI dashboard
-- [ ] Add dashboard screenshots and business findings
-- [ ] Add further automated data-quality checks
+- [x] Validate all five SQL analyses against the processed datasets
+- [x] Document data-backed business findings
 
 ## Future Enhancements
 
-- Develop an interactive Power BI dashboard with KPI cards and trend analysis.
 - Add customer retention and cohort analysis.
 - Explore customer lifetime value estimation.
-- Build product-level performance dashboards.
+- Add product-level performance analysis.
 - Automate the data preparation and database-loading workflow.
 - Investigate predictive customer churn and purchase behavior models.
 
