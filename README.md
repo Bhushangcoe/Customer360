@@ -118,6 +118,30 @@ Run the local SQL regression checks from the repository root:
 python -m unittest discover -s tests -v
 ```
 
+## Project Screenshots
+
+### Data cleaning
+
+The notebook screenshot shows the cleaning summary and a preview of the cleaned transaction data.
+
+![Data cleaning results in the notebook](images/data_cleaning/Screenshot%202026-10-27%20171245.png)
+
+### Exploratory visualizations
+
+The notebook visualizations show customer segment counts, top products by revenue, and one-time versus repeat customers.
+
+![Customer segmentation by RFM](images/data_visualization/Screenshot%202026-10-27%20172346.png)
+
+![Top 10 products by revenue](images/data_visualization/Screenshot%202026-10-27%20171621.png)
+
+![One-time versus repeat customers](images/data_visualization/Screenshot%202026-10-27%20172332.png)
+
+### SQL analysis
+
+The MySQL Workbench screenshot shows the top-customer query results.
+
+![Top customers by spending in MySQL Workbench](images/sql_analysis/Screenshot%202026-10-27%20171333.png)
+
 ## Repository Structure
 
 ```text
@@ -126,6 +150,7 @@ Customer360/
 ├── data/
 │   ├── raw/                  # Source workbook
 │   └── processed/            # Analysis-ready CSV files
+├── images/                   # Data cleaning, analysis, and SQL screenshots
 │
 ├── notebooks/
 │   └── 01_exploratory_analysis.ipynb
